@@ -1,0 +1,68 @@
+/* @override http://beta.flashartofwar.com/wp-content/themes/flashartofwar/pagenavi-css.css?ver=2.50 */
+
+/*
++----------------------------------------------------------------+
+|																							|
+|	WordPress 2.8 Plugin: WP-PageNavi 2.50									|
+|	Copyright (c) 2009 Lester "GaMerZ" Chan									|
+|																							|
+|	File Written By:																	|
+|	- Lester "GaMerZ" Chan															|
+|	- http://lesterchan.net															|
+|																							|
+|	File Information:																	|
+|	- Page Navigation CSS Style													|
+|	- wp-content/plugins/wp-pagenavi/pagenavi-css.css					|
+|																							|
++----------------------------------------------------------------+
+*/
+
+
+.wp-pagenavi a, .wp-pagenavi a:link {
+	padding: 2px 4px 2px 4px; 
+	margin: 2px;
+	border: 1px solid #111;
+	text-decoration: none;
+	color: #BD4200;		
+	background-color: #111111;	
+}
+
+.wp-pagenavi a:visited {
+	text-decoration: none;
+	background-color: #111111;	
+}
+.wp-pagenavi a:hover {	
+	color: #fff;
+	border-bottom: 1px dotted #ffffff;
+	background-color: #111111;
+}
+.wp-pagenavi a:active {
+	padding: 2px 4px 2px 4px; 
+	margin: 2px;
+	text-decoration: none;
+	border: 1px solid #111;
+	color: #fff;
+	background-color: #111111;	
+}
+.wp-pagenavi span.pages {
+	padding: 2px 4px 2px 4px; 
+	margin: 2px 2px 2px 2px;
+	color: #545454;
+	border: 1px solid #111;
+	background-color: #111111;
+}
+.wp-pagenavi span.current {
+	padding: 2px 4px 2px 4px; 
+	margin: 2px;
+	font-weight: bold;
+	border: 1px solid #111;
+	color: #545454;
+	background-color: #111111;
+}
+.wp-pagenavi span.extend {
+	padding: 2px 4px 2px 4px; 
+	margin: 2px;	
+	border: 1px solid #111;
+	color: #545454;
+	background-color: #111111;
+}

@@ -1,0 +1,32 @@
+.social_bookmark
+{
+	padding: 5px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left; 
+}
+
+img.social_img
+{
+	padding: 0px;
+	margin: 0px;
+	border: none;
+}
+
+div#box
+{
+	width: 25em;
+	padding: 10px;
+	margin:0 auto;
+	/*background:#E6E6E6;*/
+	background: #E6E6E6 url(button1.jpg) repeat-x 0 -5px;
+}
+
+a.social_bookmark
+{
+	color: #208BE1;
+	/* color: #D80F2A; */
+	/*font: lighter 130% "Trebuchet MS", Arial sans-serif;*/
+}
+
