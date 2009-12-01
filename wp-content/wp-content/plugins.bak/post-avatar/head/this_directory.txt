@@ -1,0 +1,2 @@
+EN: Here are files placed, that are included in the admin-head-area.
+DE: Hier liegen Dateien, die in den HTML-Code der Administration eingebunden werden.

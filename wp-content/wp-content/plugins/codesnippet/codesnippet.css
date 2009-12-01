@@ -1,0 +1,12 @@
+.codesnip { text-align:left; direction: ltr; }
+.codesnip .de1, .php-brief .de2, .php .de1, .php .de2 {font-weight:normal; background:transparent;color:#000; }
+.codesnip .kw1, .php .kw1 {color: #a1a100;}
+.codesnip .kw2, .php .kw2 {color: #000; font-weight: bold;}
+.codesnip .kw3, .php .kw3 {color: #000066;}
+.codesnip .kw4, .php .kw4 {color: #f63333;}
+.codesnip .co1, .codesnip .co2, .codesnip .coMULTI, .codesnip .co1, .codesnip .co2, .codesnip .coMULTI {color: #808080;}
+.codesnip .es0, .php .es0 {color: #000033; font-weight: bold;}
+.codesnip .br0, .php .br0 {color: #66cc66;}
+.codesnip .st0, .php .st0 {color: #ff0000;}
+.codesnip .nu0, .php .nu0 {color: #ff33ff;}
+.codesnip .me0, .php .me0 {color: #006600;}

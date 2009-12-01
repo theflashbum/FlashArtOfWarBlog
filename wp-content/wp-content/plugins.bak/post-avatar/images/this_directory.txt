@@ -1,0 +1,9 @@
+EN: Here are images placed, used by the plugin.
+DE: Hier liegen die Bilder, die vom Plugin selbst verwendet werden.
+
+* no_avatar.png
+	EN: This images is displayed when no avatar is selected (yet).
+	DE: Dieses Bild wird angezeigt, wenn (noch) kein Avatar ausgewählt wurde.
+* missing_avatar.png
+	EN: If a defined avatar-file doesn't exist, this image will be displayed.
+	DE: Falls eine definierte Avatar-Datei nicht existiert wird dieses Bild angezeigt.

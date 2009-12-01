@@ -1,0 +1,19 @@
+EN:
+Here are the languages-files placed.
+
+For translators:
+	Use as file prefix "gklpa-". Then use the locale domain defined in the wp-config.php. The file extesion used for translations is ".mo". So the whole filename is "gklpa-DOMAIN.mo".
+
+For users:
+	Files ending with ".po" and ".pot" are (only) for translators. You can delete these files if you don't need them.
+
+
+
+DE:
+Hier liegen die Sprachdateien.
+
+Für Übersetzer
+	Benutze den Datei-Präfix "gklpa-". Danach kommt die lokale Domäne, die in der wp-config.php definiert wurde. Als Dateiendung wird ".mo" verwendet. Der ganze Dateiname ist also "gklpa-DOMÄNE.mo"
+
+Für Benutzer:
+	Die Dateien, die mit ".po" und ".pot" enden, sind (nur) Übersetzern nützlich. Du kannst sie löschen, wenn du sie nicht brauchst.

@@ -1,0 +1,84 @@
+==== Post Avatar ====
+
+Schlagworte: Beitrag, Avatare, Bilder
+
+
+== EINFÜHRUNG ==
+Dieses Plugin vereinfacht während des Schreibens von Beiträgen und Seiten das Einbinden eines Bildchens. Diese Avatare können aus einer Liste ausgewählt werden. Zum Einbinden wird lediglich ein simpler Template-Tag innerhalb der "Loop" verwendet. Das Plugin hat ähnlichkeit mit den Userpics bei Livejournal.
+
+
+== FUNKTIONEN ==
+* Einfache Auswahl der Avatare direkt beim Verfassen von Beiträgen.
+* Erlaubte Dateitypen: JPG/JPEG GIF und PNG.
+* Template-Tag zum Anzeigen in Themen.
+* Nicht vorhandene (z.B. versehentlich gelöschte) Bilder werden nicht angezeigt.
+
+
+== INSTALLATION ==
+	1. zunächst das gesamte Verzeichnis "post-avatar" in den WordPress-Plugin-Ordner (/wp-content/plugins) hochladen,
+	2. danach das Plugin im WP-Pluginmanager aktivieren und
+	3. abschließend unter Einstellungen » Post Avatar die folgenden Optionen einstellen:
+		* Pfad zu den Avatar-Bildchen - hier den Pfad relativ zur WordPress-Installation angeben
+		* Vorschau-Bild auf der Seite "Schreiben » Beitrag schreiben" zeigen - selbsterklärend.
+
+
+== VERWENDUNG ==
+A. BILDER HOCHLADEN
+	Lade die Bilder, die du verwenden möchtest, in den innerhalb der Optionen definierten Avatar-Ordner hoch.
+
+B: DIE POST-AVATRE INS THEME EINBINDEN
+	Füge folgendes in die "Loop" ein:
+		<?php if (function_exists('gkl_postavatar')) gkl_postavatar(); ?>
+
+	Per Standard produziert das Plugin ein Bild innerhalb eines <div>-Containers mit der CSS-Klasse "postavatar". Diese Klasse kann zum Stylesheet hinzugefügt werden.
+
+	Beispiel:
+		<div class="postavatar"><img src="http://www.garinungkadol.com/wp-content/images/icons/messer01.jpg" alt="Titel des Beitrags" style="width:100px; height:100px; border:none;" /></div>
+
+
+	WEITERE OPTIONEN:
+
+	Es kann auch eine eigene CSS-Klasse definiert werden, dazu muss das Plugin folgendermaßen aufgerufen werden:
+		<php if (function_exists('gkl_postavatar')) gkl_postavatar('beispiel', '', ''); ?>
+
+	das Ergebnis wird wie folgt aussehen:
+		<div class="beispiel"><img src="http://www.garinungkadol.com/wp-content/images/icons/messer01.jpg" alt="Titel des Beitrags" style="width:100px; height:100px; border:none;" /></div>
+
+
+	Ebanfalls möglich ist es, eigenes HTML anzugeben. Dazu müssen die string-Parameter "before" und "after" verwendet werden:
+	In diesem Beispiel before=<p class="meinbild"> und after=</p>:
+		<php if (function_exists('gkl_postavatar')) gkl_postavatar('', '<p class="meinbild">', '</p>'); ?>
+
+	Ergebnis:
+		<p class="meinbild"><img src="http://www.garinungkadol.com/wp-content/images/icons/messer01.jpg" alt="Titel des Beitrags" style="width:100px; height:100px; border:none;" /></p>
+
+	Und schließlich kann der Avatar auch als einfaches Bild ausgegeben werden:
+		<php if (function_exists('gkl_postavatar')) gkl_postavatar('', '', ''); ?>
+
+	Ergebnis:
+		<img src="http://www.garinungkadol.com/wp-content/images/icons/messer01.jpg" alt="Titel des Beitrags" style="width:100px; height:100px; border:none;" />
+
+
+C. AVATAR DEM BEITRAG HINZUFÜGEN
+	1. Um einem Beitrag einen Avatar hizufügen zu können, gehe zur Sektion "Post-Avatar" (unterhalb des Speichern-Knopfes).
+	2. Wähle ein Bild aus der Liste.
+	3. Speichern.
+
+
+== VERSIONSGESCHICHTE ==
+
+1.1 (09/10/2006)
+	* Fix:  das Plugin produziert nun valides (X)HTML
+
+	* Neu:  Geschwindigkeitsoptimierung (nun läuft es einige Millisekunden schneller ;-))
+	* Neu:  Dynamisches Nachladen der Avatare (getestet mit Mozilla Firefox)
+	* Neu:  Tag-Parameter erweitert
+	* Neu:  Lokalisation: Deutsch
+
+1.0 (08/26/2006)
+	* erste Veröffentlichung
+
+
+== SUPPORT ==
+Bitte besuche http://www.garinungkadol.com/category/plugins/post-avatar/ um Fehler zu übermitteln, Hilfe zu bekommen, oder um einfach nur Feedback zu hinterlassen.
+
