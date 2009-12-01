@@ -1,3 +1,5 @@
+/* @override http://staging.flashartofwar.com/wp-content/themes/flashartofwar/style.css */
+
 /* @override http://beta.flashartofwar.com/wp-content/themes/colourise/style.css */
 
 /*
@@ -28,7 +30,7 @@ Author URI: http://www.jessefreeman.com/
 
 body {
 	font: 11px/165% 'Lucida Grande', Geneva, Verdana, Arial, Helvetica, sans-serif;
-	color: #5B5B5B; 	
+	color: #808080; 	
 	margin: 0; 	padding: 0; 
 	background: #070707 url(images/header.gif) no-repeat center 80px;
 	text-align: center;
@@ -102,7 +104,7 @@ img.websnapr-thumb {
 	background: #1B1B1B;
 	border: 1px solid #1B1B1B;
 	padding: 5px;
-	margin: 20px 10px 30px 0px;
+	margin: 15px 10px 30px 0px;
 	float: left;
 	display: inline;
 }
