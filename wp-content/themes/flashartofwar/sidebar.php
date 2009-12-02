@@ -1,5 +1,5 @@
 		<!-- sidebar starts -->
-		<div id="sidebar">
+		<div id="<?php if (is_home()) echo "home-sidebar";?>" class="sidebar">
 
 <?php if ( !function_exists('dynamic_sidebar') || !dynamic_sidebar() ) : ?>
 		

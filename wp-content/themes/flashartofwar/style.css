@@ -1,5 +1,7 @@
 /* @override http://staging.flashartofwar.com/wp-content/themes/flashartofwar/style.css */
 
+/* @override http://staging.flashartofwar.com/wp-content/themes/flashartofwar/style.css */
+
 /* @override http://beta.flashartofwar.com/wp-content/themes/colourise/style.css */
 
 /*
@@ -9,18 +11,8 @@ Description: This is a theme.
 Version: 2.0
 Author: Jesse Freeman
 Author URI: http://www.jessefreeman.com/
-
 */
 
-/* ----------------------------------------------
-	Template Name : Colourise
-	Template Code : S-0022
-	Version : 1.0   
-	Author : Erwin Aligam
-	Author URI : http://www.styleshout.com/       
-	Last Date Modified : March 07, 2008	
- ------------------------------------------------ */
- 
 /* ----------------------------------------------
    HTML ELEMENTS
 ------------------------------------------------- */ 
@@ -104,7 +96,7 @@ img.websnapr-thumb {
 	background: #1B1B1B;
 	border: 1px solid #1B1B1B;
 	padding: 5px;
-	margin: 15px 10px 30px 0px;
+	margin: 15px 10px 0px 0px;
 	float: left;
 	display: inline;
 }
@@ -348,13 +340,19 @@ input.button {
 }
 
 /* Main Column */
-#main {
+.main {
 	float: left;
 	width: 620px;
 	padding: 0; margin: 0;
 	display: inline;		
 }
-#main h2 {
+
+#home-main
+{
+	width: 460px;
+}
+
+.main h2 {
 	padding-bottom: 3px;
 	margin-top: 15px;
 	font: normal 3.4em 'Trebuchet MS', Tahoma, Helvetica, Arial, sans-serif;	
@@ -362,7 +360,7 @@ input.button {
 	letter-spacing: -2px;	
 	text-transform: none;	
 }
-#main h2 a {
+.main h2 a {
 	color: #cd9857;
 	text-decoration: none;		
 	border: none;
@@ -372,37 +370,47 @@ input.button {
 	background: url('images/headline_icon.gif') no-repeat;
 }
 
-#main h2 a:hover {
+.main h2 a:hover {
 	color: #ffffff;
 }
 
-#main ul li {
+.main ul li {
 	list-style-image: url(bullet.gif);
 }
 
-#main div.content{
+.main div.content{
 	min-height: 200px;
 }
 
 /* Sidebar */	
-#sidebar {
+.sidebar {
 	float: right;
 	width: 300px;
 	padding: 0; margin: 15px 0 0 0;		
 	display: inline;	
+}
+
+#home-sidebar {
+	width: 220px;
+}
+
+#snippets {
+	margin: 15px 20px 0 20px;
+	float: left;
+	width: 220px;
 }	
-#sidebar h3 {
+.sidebar h3 {
 	margin-top: 10px;
 	padding: 15px 5px 20px 5px; 
 	font: normal 1.8em 'Trebuchet MS', Tahoma, Helvetica, Arial, sans-serif;				
 	background: url(images/side_bar_break.gif) no-repeat center bottom;
 	color: #df4b25;
 }
-#sidebar ul {
+.sidebar ul {
 	text-align: left;
 	margin: 7px 5px 8px 0px; padding: 0;				
 }
-#sidebar ul li {
+.sidebar ul li {
 	list-style: none;
 	padding: 8px 10px;
 	margin: 0;		
@@ -411,7 +419,7 @@ input.button {
 * html body #sidebar ul li {
 	height: 1%;
 }
-#sidebar ul li a {
+.sidebar ul li a {
 	text-decoration: none;	
 	border: none;
 	color: #5d5d5d; 	
@@ -421,19 +429,19 @@ input.button {
 	font-size: 14px;	
 	/* letter-spacing: .5px;  */
 }
-#sidebar ul li a span {
+.sidebar ul li a span {
 	color: #444;	
 	font-family: Georgia, 'Times New Roman', Times, serif;
 	font-style: italic;
 	font-weight: normal;	
 	font-size: 11px;
 }
-#sidebar ul li a:hover,
-#sidebar ul li a:hover span {	
+.sidebar ul li a:hover,
+.sidebar ul li a:hover span {	
 	color: #fff;	
 }
-#sidebar ul ul { margin: 0 0 0 5px; padding: 0; }
-#sidebar ul ul li { border: none; }
+.sidebar ul ul { margin: 0 0 0 5px; padding: 0; }
+.sidebar ul ul li { border: none; }
 
 /* footer */
 #footer-wrap {

@@ -1,7 +1,14 @@
+<?php if(function_exists('featuredposts')) echo featuredposts(); else echo"No Post To Show";?>
+
 <?php get_header(); ?>
 
-		<div id="main">
-			
+	
+	
+
+		<div id="<?php if (is_home()) echo "home-main";?>" class="main">
+	
+	
+	<?php query_posts($query_string . '&cat=-18,-19,-20,-21'); ?>
 	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
 			<h2><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
@@ -23,7 +30,7 @@
 		
 			
 			<?php
-			include('wp-pagenavi.php');
+
 			if(function_exists('wp_pagenavi')) { wp_pagenavi(); }
 			?>
 
@@ -36,6 +43,22 @@
 
 		<!-- main ends -->	
 		</div>
-		
+		<?php if (is_home()) {?>
+		<div id="snippets">
+			<h2><?php echo get_cat_name(19);?></h2>
+			<?php
+			 $lastposts = get_posts('numberposts=20&category=19');
+			 foreach($lastposts as $post) :
+			    setup_postdata($post);
+			 ?>
+			<div class="snippet"> 
+				<h4><?php $category = get_the_category();
+				echo get_cat_name($category[0]->cat_ID);?></h4>
+			<a href="<?php the_permalink(); ?>" id="post-<?php the_ID(); ?>">
+			 <?php the_content(); ?></a>
+			</div>
+			 <?php endforeach; ?>
+			</div>
+		<?php } ?>
 <?php get_sidebar(); ?>
 <?php get_footer(); ?>
