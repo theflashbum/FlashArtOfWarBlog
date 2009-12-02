@@ -170,7 +170,7 @@ class AceCategoriesWidget
 		<ul>
 		<?php 
 			$cat_args['title_li'] = '';
-			/wp_list_categories($cat_args); 
+			wp_list_categories($cat_args); 
 		?>
 		</ul>
 <?php
