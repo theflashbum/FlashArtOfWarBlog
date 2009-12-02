@@ -1,14 +1,9 @@
-<?php if(function_exists('featuredposts')) echo featuredposts(); else echo"No Post To Show";?>
-
 <?php get_header(); ?>
-
-	
-	
 
 		<div id="<?php if (is_home()) echo "home-main";?>" class="main">
 	
 	
-	<?php query_posts($query_string . '&cat=-18,-19,-20,-21'); ?>
+	<?php query_posts($query_string . ''); ?>
 	<?php if (have_posts()) : while (have_posts()) : the_post(); ?>
 
 			<h2><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
