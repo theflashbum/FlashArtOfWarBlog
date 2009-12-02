@@ -1,4 +1,4 @@
-
+php_flag display_errors on
 # BEGIN WordPress
 <IfModule mod_rewrite.c>
 RewriteEngine On
