@@ -12,7 +12,7 @@
 
 			<h2><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
 			
-			<p class="post-info">Posted by <?php the_author(); ?> | Filed under <?php the_category(', ') ?></p>
+			<p class="post-info">Filed under <?php the_category(', ') ?></p>
 		<div class="content">		
 		<?php the_content('Read the rest of this entry &raquo;'); ?>
 		</div>
