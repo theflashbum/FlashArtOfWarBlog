@@ -12,17 +12,21 @@
 
 			<h2><a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
 			
-			<p class="post-info">Filed under <?php the_category(', ') ?></p>
-		<div class="content">		
-		<?php the_content('Read the rest of this entry &raquo;'); ?>
+			<p class="post-info"><span class="date"><?php the_time('F jS, Y') ?></span></p>
+		<div class="content">
+		
+			<?php if ( !is_category() ) {
+				the_excerpt('Read the rest of this entry &raquo;');
+			} else {
+				the_content('Read the rest of this entry &raquo;');
+			} ?>
+
 		</div>
 		<?php the_tags('<p>Tags: ', ', ', '</p>'); ?>
 			
 			<p class="postmeta">
-			<a href="<?php the_permalink() ?>" class="readmore">Read more</a> |
 			<?php comments_popup_link('Comments (0)', 'Comments (1)', 
-'Comments (%)', 'comments', 'Comments off'); ?> |				
-			<span class="date"><?php the_time('F jS, Y') ?></span>	
+'Comments (%)', 'comments', 'Comments off'); ?> | Filed under <?php the_category(', ') ?>	
 			</p>
 
 <?php endwhile; ?>
@@ -53,7 +57,7 @@
 			 ?>
 			<div class="snippet"> 
 				<h4><?php $category = get_the_category();
-				echo get_cat_name($category[0]->cat_ID);?></h4>
+				echo get_cat_name($category[0]->cat_ID);?> | <span class="date"><?php the_time('M jS, Y') ?></span></h4>
 			<a href="<?php the_permalink(); ?>" id="post-<?php the_ID(); ?>">
 			 <?php the_content(); ?></a>
 			</div>

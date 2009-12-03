@@ -6,7 +6,7 @@ $do_not_duplicate = $post->ID; ?>
 
 <h2>Featured Post: <a href="<?php the_permalink() ?>" rel="bookmark" title="Permanent Link to <?php the_title_attribute(); ?>"><?php the_title(); ?></a></h2>
 
-<p class="post-info">Filed under <?php the_category(', ') ?></p>
+<p class="post-info"><span class="date"><?php the_time('F jS, Y') ?></span></p>
 <div class="content">		
 	<img class="websnapr-thumb" src="/wp-content/themes/flashartofwar/images/thumbnail.php"/>
 
@@ -15,10 +15,9 @@ $do_not_duplicate = $post->ID; ?>
 <?php the_tags('<p>Tags: ', ', ', '</p>'); ?>
 
 <p class="postmeta">
-<a href="<?php the_permalink() ?>" class="readmore">Read more</a> |
 <?php comments_popup_link('Comments (0)', 'Comments (1)', 
 'Comments (%)', 'comments', 'Comments off'); ?> |				
-<span class="date"><?php the_time('F jS, Y') ?></span>	
+Filed under <?php the_category(', ') ?>	
 </p>
 
 
