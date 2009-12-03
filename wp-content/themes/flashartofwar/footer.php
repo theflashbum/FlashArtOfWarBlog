@@ -5,11 +5,19 @@
 	<div id="footer-wrap"><div id="footer-content">
 	
 		<div class="col float-left space-sep">
-		
-			<h3>Recent Posts</h3>
-			<ul class="col-list">				
-<?php wp_get_archives('type=postbypost&limit=10'); ?>
-			</ul>		
+			
+			<h3>Most Popular</h3>
+			<ul class="col-list">
+			<?php $result = $wpdb->get_results("SELECT comment_count,ID,post_title FROM $wpdb->posts ORDER BY comment_count DESC LIMIT 0 , 10");
+			foreach ($result as $post) {
+			setup_postdata($post);
+			$postid = $post->ID;
+			$title = $post->post_title;
+			$commentcount = $post->comment_count;
+			if ($commentcount != 0) { ?>
+				<li><a href="<?php echo get_permalink($postid); ?>" title="< ?php echo $title ?>"><?php echo $title ?></a></li>
+			<?php } } ?></ul>	
+				
 				
 		</div>
 		

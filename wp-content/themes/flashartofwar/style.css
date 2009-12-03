@@ -1,9 +1,5 @@
 /* @override http://staging.flashartofwar.com/wp-content/themes/flashartofwar/style.css */
 
-/* @override http://staging.flashartofwar.com/wp-content/themes/flashartofwar/style.css */
-
-/* @override http://beta.flashartofwar.com/wp-content/themes/colourise/style.css */
-
 /*
 Theme Name: FlashArtOfWar
 Theme URI: http://flashartofwar.com
@@ -57,6 +53,21 @@ h2 {
 	color: #895F30;
 	padding: 20px 10px 5px 0px;	
 }
+
+#snippets h2 a {
+	color: #cd9857;
+	text-decoration: none;
+}
+
+#snippets h2 {
+	margin-bottom: 20px;
+}
+
+#snippets h2 a:hover {
+	color:#fff;
+}
+
+
 h3 {
 	font-size: 1.7em;	
 	font-weight: normal;
@@ -96,7 +107,7 @@ img.websnapr-thumb {
 	background: #1B1B1B;
 	border: 1px solid #1B1B1B;
 	padding: 5px;
-	margin: 15px 10px 0px 0px;
+	margin: 0px 10px 0px 0px;
 	float: left;
 	display: inline;
 }
@@ -273,6 +284,13 @@ input.button {
 	display: none;	
 }
 
+#main {
+	float: left;
+	width: 620px;
+	padding: 0; margin: 0;
+	display: inline;		
+}
+
 /*  Navigation  */
 #nav {
 	position: absolute;
@@ -364,10 +382,46 @@ input.button {
 	color: #cd9857;
 	text-decoration: none;		
 	border: none;
-	padding-left: 80px;
+
+}
+
+#left-column-block {
+	width:  720px;
+	float: left;
+	display: block;
+}
+
+.featured_post{
+	margin: 20px 20px 0px 0px;
+	
+}
+
+div.content {
+
+}
+
+#left-column-block div.featured_post div.content {
+	min-height: 180px;
+}
+
+.featured_post h2 {
+	color: #cd9857;
+	text-decoration: none;		
+	border: none;
 	display: block;
 	height: 85px;
 	background: url('images/headline_icon.gif') no-repeat;
+	padding: 0px 0px 0px 80px;
+	margin: 0;
+	font: normal 3.4em 'Trebuchet MS', Tahoma, Helvetica, Arial, sans-serif;	
+	color: #fff; 
+	letter-spacing: -2px;	
+	text-transform: none;
+}
+
+#left-column-block div.featured_post div.content p {
+	color: #e4e4e4;
+	font-size: 1.4em;
 }
 
 .main h2 a:hover {
@@ -379,7 +433,7 @@ input.button {
 }
 
 .main div.content{
-	min-height: 200px;
+
 }
 
 /* Sidebar */	
@@ -395,9 +449,14 @@ input.button {
 }
 
 #snippets {
-	margin: 15px 20px 0 20px;
+	margin: 25px 20px 0 20px;
 	float: left;
 	width: 220px;
+}
+
+div.snippet {
+	margin-bottom: 10px;
+	border-bottom: 1px dotted #333;
 }	
 .sidebar h3 {
 	margin-top: 10px;

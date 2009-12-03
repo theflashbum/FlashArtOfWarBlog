@@ -1,6 +1,10 @@
 <?php get_header(); ?>
-
-		<div id="<?php if (is_home()) echo "home-main";?>" class="main">
+	<div id="<?php if(is_home() && !is_paged()) echo "left-column-block";?>">
+	<?php if(is_home() && !is_paged()): ?>
+	<?php include (TEMPLATEPATH . '/featured.php'); ?>
+	<?php endif;?>
+		
+		<div id="<?php if(is_home() && !is_paged()) echo "home-main";?>" class="main">
 	
 	
 	<?php query_posts($query_string . ''); ?>
@@ -38,9 +42,10 @@
 
 		<!-- main ends -->	
 		</div>
-		<?php if (is_home()) {?>
+		<?php if(is_home() && !is_paged()) {?>
 		<div id="snippets">
-			<h2><?php echo get_cat_name(19);?></h2>
+			
+			<h2><a href="<?php echo get_category_link( 19 ); ?>"><?php echo get_cat_name(19);?></a></h2>
 			<?php
 			 $lastposts = get_posts('numberposts=20&category=19');
 			 foreach($lastposts as $post) :
@@ -53,7 +58,11 @@
 			 <?php the_content(); ?></a>
 			</div>
 			 <?php endforeach; ?>
+			<p>
+			<a href="<?php echo get_category_link( 19 ); ?>">Read More >></a>
+			</p>
 			</div>
 		<?php } ?>
+		</div>
 <?php get_sidebar(); ?>
 <?php get_footer(); ?>
