@@ -23,14 +23,13 @@
 		<?php the_tags('<p>Tags: ', ', ', '</p>'); ?>
 			
 			<p class="postmeta"><?php comments_popup_link('Comments (0)', 'Comments (1)', 
-'Comments (%)', 'comments', 'Comments off'); ?> | <?php the_category(', ') ?> | <?php $external_link = get_post_meta(get_the_ID(), 'wpo_sourcepermalink', true);
+			'Comments (%)', 'comments', 'Comments off'); ?> | Filed in <?php the_category(', ') ?><?php $external_link = get_post_meta(get_the_ID(), 'wpo_sourcepermalink', true);
 					if($external_link)
 					{
-						echo '<a href="'.$external_link.'" target="_blank">View source</a>'; 
+						echo ' | <a href="'.$external_link.'" target="_blank">View source</a>'; 
 					}
 				?>
 			</p>
-
 <?php endwhile; ?>
 		
 			
