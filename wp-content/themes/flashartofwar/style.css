@@ -1,5 +1,7 @@
 /* @override http://staging.flashartofwar.com/wp-content/themes/flashartofwar/style.css */
 
+/* @override http://staging.flashartofwar.com/wp-content/themes/flashartofwar/style.css */
+
 /*
 Theme Name: FlashArtOfWar
 Theme URI: http://flashartofwar.com
@@ -127,10 +129,14 @@ acronym {
   	border-bottom: 1px dotted #5B5B5B;
 }
 blockquote {
-	padding: 10px 20px 0px 35px;  
+
+}
+
+blockquote#yarq_quote {
+		padding: 10px 10px 0px 35px;  
    background: #111 url(images/quote.jpg) no-repeat 0px 10px;
 	font-weight: normal;
-	font-size: 14px;
+	font-size: 1.2em;
 	line-height: 1.6em;
 	font-style: italic;
 	color: #808080;
@@ -392,7 +398,7 @@ input.button {
 }
 
 .featured_post{
-	margin: 20px 20px 0px 0px;
+	margin: 40px 20px 0px 0px;
 	
 }
 

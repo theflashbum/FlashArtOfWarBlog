@@ -15,18 +15,20 @@
 			<p class="post-info"><span class="date"><?php the_time('F jS, Y') ?></span></p>
 		<div class="content">
 		
-			<?php if ( !is_category() ) {
-				the_excerpt('Read the rest of this entry &raquo;');
-			} else {
+			<?php 
 				the_content('Read the rest of this entry &raquo;');
-			} ?>
+			?>
 
 		</div>
 		<?php the_tags('<p>Tags: ', ', ', '</p>'); ?>
 			
-			<p class="postmeta">
-			<?php comments_popup_link('Comments (0)', 'Comments (1)', 
-'Comments (%)', 'comments', 'Comments off'); ?> | Filed under <?php the_category(', ') ?>	
+			<p class="postmeta"><?php comments_popup_link('Comments (0)', 'Comments (1)', 
+'Comments (%)', 'comments', 'Comments off'); ?> | <?php the_category(', ') ?> | <?php $external_link = get_post_meta(get_the_ID(), 'wpo_sourcepermalink', true);
+					if($external_link)
+					{
+						echo '<a href="'.$external_link.'" target="_blank">View source</a>'; 
+					}
+				?>
 			</p>
 
 <?php endwhile; ?>

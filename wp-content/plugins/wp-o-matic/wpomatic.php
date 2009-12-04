@@ -659,8 +659,7 @@ class WPOMatic {
   		'post_category'           => $category,
   		'post_status' 	          => $status,
   		'post_author'             => $authorid,
-		'post_excerpt'			=> $this->myTruncate(strip_tags($content), 400),
-  		'post_date'               => $date,
+		'post_date'               => $date,
   		'comment_status'          => $comment_status,
   		'ping_status'             => $allowpings
     ));
