@@ -1,0 +1,92 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Flash DecalSheet System</title>
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="Jesse Freeman">
+	<!-- Date: 2009-03-11 -->
+	
+	<script type="text/javascript" src="js/swfobject.js"></script>
+    <script type="text/javascript">
+        <!-- For version detection, set to min. required Flash Player version, or 0 (or 0.0.0), for no version detection. --> 
+        var swfVersionStr = "9.0.124";
+        <!-- To use express install, set to playerProductInstall.swf, otherwise the empty string. -->
+        var xiSwfUrlStr = "";
+        var flashvars = {skinA: "images/button_skin_a.png",
+						 skinB: "images/button_skin_b.png"};
+        var params = {};
+        params.quality = "high";
+        params.bgcolor = "#869ca7";
+        params.allowscriptaccess = "sameDomain";
+        var attributes = {};
+        attributes.id = "DeaclSheetTutorial";
+        attributes.name = "DeaclSheetTutorial";
+        attributes.align = "middle";
+        swfobject.embedSWF(
+            "swfs/DeaclSheetTutorial.swf", "flashContent", 
+            "340", "90", 
+            swfVersionStr, xiSwfUrlStr, 
+            flashvars, params, attributes);
+		<!-- JavaScript enabled so display the flashContent div in case it is not replaced with a swf object. -->
+		swfobject.createCSS("#flashContent", "display:block;text-align:left;");
+    </script>
+</head>
+<body>
+	<h1>Flash DecalSheet System</h1>
+
+<p>At the end of the tutorial you will have the following swf.</p>
+
+ <!-- SWFObject's dynamic embed method replaces this alternative HTML content with Flash content when enough 
+		 JavaScript and Flash plug-in support is available. The div is initially hidden so that it doesn't show
+		 when JavaScript is disabled.
+	-->
+    <div id="flashContent">
+    	<p>
+        	To view this page ensure that Adobe Flash Player version 
+			9.0.124 or greater is installed. 
+		</p>
+		<a href="http://www.adobe.com/go/getflashplayer">
+			<img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash Player" />
+		</a>
+    </div>
+   	
+	<!-- FlexBuilder debugger can't connect to object if within a div. --> 
+   	<noscript>
+        <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="340" height="90" id="DeaclSheetTutorial">
+            <param name="movie" value="swfs/DeaclSheetTutorial.swf" />
+            <param name="quality" value="high" />
+            <param name="bgcolor" value="#869ca7" />
+            <param name="allowScriptAccess" value="sameDomain" />
+            <!--[if !IE]>-->
+            <object type="application/x-shockwave-flash" data="swfs/DeaclSheetTutorial.swf" width="340" height="90">
+                <param name="quality" value="high" />
+                <param name="bgcolor" value="#869ca7" />
+                <param name="allowScriptAccess" value="sameDomain" />
+            <!--<![endif]-->
+                <a href="http://www.adobe.com/go/getflashplayer">
+                    <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash Player" />
+                </a>
+            <!--[if !IE]>-->
+            </object>
+            <!--<![endif]-->
+        </object>
+    </noscript>
+
+<p>The above example shows our source DecalSheet on the left, and a SimpleButton on the right using Decals for each button state. When you click on the button, a new image is loaded in and its bitmap data replaces the original skin in the DecalSheet. All of the Decals in the Simple Button will also update. The reskinning is almost instantaneous!</p>
+
+	<h2>Decal Sheet Source Images</h2>
+	<p>Before you get started, make sure you have the following two images. These will be our DecalSheet sources which we will use to cut out button states from.</p>
+	<div>
+		<div class="tutorial_image"><img src="images/button_skin_a.png"/></div>
+		<p>button_skin_a.png</p>
+	</div>
+	<div>
+		<div class="tutorial_image"><img src="images/button_skin_b.png"/></div>
+		<p>button_skin_b.png</p>
+	</div>
+</body>
+
+</html>

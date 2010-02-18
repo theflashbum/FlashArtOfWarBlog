@@ -1,0 +1,716 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>Flash DecalSheet System</title>
+	<meta name="generator" content="TextMate http://macromates.com/">
+	<meta name="author" content="Jesse Freeman">
+	<!-- Date: 2009-03-11 -->
+	
+	<script type="text/javascript" src="js/swfobject.js"></script>
+    <script type="text/javascript">
+        <!-- For version detection, set to min. required Flash Player version, or 0 (or 0.0.0), for no version detection. --> 
+        var swfVersionStr = "9.0.124";
+        <!-- To use express install, set to playerProductInstall.swf, otherwise the empty string. -->
+        var xiSwfUrlStr = "";
+        var flashvars = {skinA: "images/button_skin_a.png",
+						 skinB: "images/button_skin_b.png"};
+        var params = {};
+        params.quality = "high";
+        params.bgcolor = "#869ca7";
+        params.allowscriptaccess = "sameDomain";
+        var attributes = {};
+        attributes.id = "DeaclSheetTutorial";
+        attributes.name = "DeaclSheetTutorial";
+        attributes.align = "middle";
+        swfobject.embedSWF(
+            "swfs/DeaclSheetTutorial.swf", "flashContent", 
+            "340", "90", 
+            swfVersionStr, xiSwfUrlStr, 
+            flashvars, params, attributes);
+		<!-- JavaScript enabled so display the flashContent div in case it is not replaced with a swf object. -->
+		swfobject.createCSS("#flashContent", "display:block;text-align:left;");
+    </script>
+</head>
+<body>
+	<h1>Flash DecalSheet System</h1>
+	<div class="tutorial_image"><img src="images/decal_preview.jpg"/></div>
+	<p>I came up with the idea of creating what I call Flash DecalSheets from the stickers that come with model airplanes and have been using "Decals" to skin my own Flash applications ever since. A DecalSheet is basically 1 large image (jpg, png, or gif) that gets cut up into smaller images called Decals. This is one of the most efficient ways of bringing lots of assets into a flash application without relying on the Library (if you are using the Flash IDE) or the Embed tag (if you are using the Flex Compiler). Lets take a look at how to make a simple DecalSheet system.</p> 
+
+<div class="tutorial_image"><img src="images/define_decal-1.jpg"></div>
+<p>The above diagram illustrates how we take a single DecalSheet image and use coordinates to cut out a new Decal.</p>
+
+	<p>In this tutorial we are going to create 2 classes: the DecalSheet and the Decal. You define x, y, width, and height coordinates to cut out graphics from the DecalSheet and it will return Decals. Decals are Bitmaps and can be used anywhere DisplayObjects would normally be used. What makes Decals special is that they retain a reference to the DecalSheet they get cut out from. When you update the BitmapData of the DecalSheet, all of the Decals cut out from that sheet will also update. This allows you to reskin an entire application at run time by simply loading in new source images.</p>
+
+<p>At the end of the tutorial you will have the following swf.</p>
+
+ <!-- SWFObject's dynamic embed method replaces this alternative HTML content with Flash content when enough 
+		 JavaScript and Flash plug-in support is available. The div is initially hidden so that it doesn't show
+		 when JavaScript is disabled.
+	-->
+    <div id="flashContent">
+    	<p>
+        	To view this page ensure that Adobe Flash Player version 
+			9.0.124 or greater is installed. 
+		</p>
+		<a href="http://www.adobe.com/go/getflashplayer">
+			<img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash Player" />
+		</a>
+    </div>
+   	
+	<!-- FlexBuilder debugger can't connect to object if within a div. --> 
+   	<noscript>
+        <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="340" height="90" id="DeaclSheetTutorial">
+            <param name="movie" value="swfs/DeaclSheetTutorial.swf" />
+            <param name="quality" value="high" />
+            <param name="bgcolor" value="#869ca7" />
+            <param name="allowScriptAccess" value="sameDomain" />
+            <!--[if !IE]>-->
+            <object type="application/x-shockwave-flash" data="swfs/DeaclSheetTutorial.swf" width="340" height="90">
+                <param name="quality" value="high" />
+                <param name="bgcolor" value="#869ca7" />
+                <param name="allowScriptAccess" value="sameDomain" />
+            <!--<![endif]-->
+                <a href="http://www.adobe.com/go/getflashplayer">
+                    <img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" alt="Get Adobe Flash Player" />
+                </a>
+            <!--[if !IE]>-->
+            </object>
+            <!--<![endif]-->
+        </object>
+    </noscript>
+
+<p>The above example shows our source DecalSheet on the left, and a SimpleButton on the right using Decals for each button state. When you click on the button, a new image is loaded in and its bitmap data replaces the original skin in the DecalSheet. All of the Decals in the Simple Button will also update. The reskinning is almost instantaneous!</p>
+
+	<h2>Decal Sheet Source Images</h2>
+	<p>Before we get started, make sure you have the following two images. These will be our DecalSheet sources which we will use to cut out button states from.</p>
+	<div>
+		<div class="tutorial_image"><img src="images/button_skin_a.png"/></div>
+		<p>button_skin_a.png</p>
+	</div>
+	<div>
+		<div class="tutorial_image"><img src="images/button_skin_b.png"/></div>
+		<p>button_skin_b.png</p>
+	</div>
+
+
+	<h2>Step 1: Setting up the Doc Class</h2>
+	<p>The first thing we are going to do is create our Main Doc class. I have already set up a simple class that will load in a image and add it to the display list.</p>
+
+	<pre>
+package {
+
+import flash.display.Bitmap;
+import flash.display.Loader;
+import flash.display.Sprite;
+import flash.display.StageAlign;
+import flash.display.StageScaleMode;
+import flash.events.Event;
+import flash.net.URLRequest;
+
+	public class DeaclSheetTutorial extends Sprite
+	{
+		private var loader:Loader;
+
+		public function DeaclSheetTutorial()
+		{
+			configureStage();
+			loadDecalSheetSource("images/button_skin_a.png");
+		}
+
+		private function configureStage():void
+		{
+			stage.align = StageAlign.TOP_LEFT;
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+		}
+
+		public function loadDecalSheetSource(url:String):void
+		{
+			loader= new Loader();
+			loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onImageLoad);
+			loader.load( new URLRequest( url ) );
+		}
+
+		private function onImageLoad(event:Event):void
+		{
+
+			loader.removeEventListener(Event.COMPLETE, onImageLoad);
+			var bitmap:Bitmap = Bitmap(loader.content);
+
+			addChild(bitmap);
+
+		}
+	}
+}
+
+	</pre>
+
+<p>When you run this class you should see our button_skin_a.png being displayed on the stage. Now we are ready to start creating our DecalSheet.</p>
+
+<h2>Step 2: Creating the DecalSheet Class</h2>
+<p>
+The DecalSheet extends the Bitmap Class. I have set up my classes in "com.flashartofwar" packages but you are free to set them up however you want. Create a new class called DecalSheet and paste in the following code:
+</p>
+
+<pre>
+package com.flashartofwar
+{
+	import flash.display.BitmapData;
+	import flash.display.Bitmap;
+
+	public class DecalSheet extends Bitmap
+	{
+		public function DecalSheet(bitmapData:BitmapData=null, pixelSnapping:String="auto", smoothing:Boolean=false)
+		{
+			super(bitmapData, pixelSnapping, smoothing);
+		}
+
+	}
+}
+</pre>
+
+<h2>Step 3: Testing the DecalSheet</h2>
+<p>Now that we have created our DecalSheet, lets make sure it can display images. We are going to do this by passing in the BitmapData of the png we loaded earlier. Go back into the Doc Class and replace line 40, where we call addChild with the following:</p>
+<pre>
+decalSheet = new DecalSheet(bitmap.bitmapData);
+addChild(decalSheet);
+</pre>
+
+<p>We are also going to have to import the DecalSheet class at line 3:</p>
+<pre>
+import com.flashartofwar.DecalSheet;
+</pre>
+
+<p>As well as setting up a variable to save our DecalSheet at line 16:</p>
+<pre>
+private var decalSheet:DecalSheet;
+</pre>
+
+<p>Now, when you compile, you should see the same image but now it is inside of the DecalSheet. Lets talk about how we can cut these graphics out.</p>
+
+<h2>Step 4: Storing Decals in the DecalSheet</h2>
+<p>At this point we have a simple DecalSheet class that extends the Bitmap Class. Our goal is to be able to define areas of the DecalSheet that can be cut out and turned into Decals. Before we can register decals we are going to need a place to store them. Add the following property on line 8:</p>
+
+<pre>
+protected var decalRectangles:Dictionary = new Dictionary(true);
+</pre>
+
+<p>And import the Dictonary class on line 5:</p>
+
+<pre>
+import flash.utils.Dictionary;
+</pre>
+
+<p>As you can see this Dictonary is going to be the place were we can associate a Decal's names with its coordinates.</p>
+
+<h2>Step 5: Registering Decals</h2>
+<p>At its core, a Decal is really just a name and its x, y, width, and height values that we use to cut out BitmapData from the DecalSheet. We are going to register this information with the following function on line 16.</p>
+<pre>
+public function registerDecal(name:String, rectangle:Rectangle):void
+{
+	decalRectangles[name] = rectangle;
+}
+</pre>
+
+<p>Now you can associate a Decal's cutout coordinates to a name and a rectangle.</p>
+
+<p>You will also need to import the Rectangle class at line 5:</p>
+
+<pre>
+import flash.geom.Rectangle;
+</pre>
+
+<h2>Step 6: DecalSheet sample method</h2>
+<p>We are going to add the single most important function of the DeaclSheet, the sample() method. This function is what we will use to cut out BitmapData from the DecalSheet in order to create our decals. Lets put the following function on line 22 of the DecalSheet Class.</p>
+
+<pre>
+public function sample(name:String):BitmapData
+{
+	var rect:Rectangle = decalRectangles[name];
+
+	// Applies the correct offset when sampling the data
+	var m:Matrix = new Matrix();
+	m.translate(-rect.x,-rect.y);
+
+	// Creates new BitmapData				
+	var bmd:BitmapData = new BitmapData(rect.width, rect.height, true, 0xffffff);
+	bmd.draw(bitmapData, m);
+
+	return bmd;
+}
+</pre>
+
+<p>Also you will need to import the Matrix Class on line 5:</p>
+<pre>
+import flash.geom.Matrix;
+</pre>
+
+<p>There is a lot going on in this function so lets go line by line through the process.</p>
+
+<pre>
+var rect:Rectangle = decalRectangles[name];
+</pre>
+<p>Here, we use the passed in Decal name to look up the registered Rectangle from the decalRectangles Dictonary.</p>
+
+<p>Next we are going to create a Matrix to offset where we sample the BitmapData from.</p>
+
+<pre>
+var m:Matrix = new Matrix();
+	m.translate(-rect.x,-rect.y);	
+</pre>
+
+<p>Here we use the Rectangle's x and y position to create the appropriate sample offset.</p>
+
+<p>Now we have to create new BitmapData to store our cutout.</p>
+
+<pre>
+var bmd:BitmapData = new BitmapData(rect.width, rect.height, true, 0xffffff);	
+</pre>
+
+<p>As you can see we use the Rectangle's width and height as the new dimensions, set the transparent parameter to true, and give the new BitmapData a background color of 0xffffff. By setting transparent to true and supplying a background color we will be able to correctly sample transparent png images like the "button_skin" examples we are loading in.</p>
+
+<p>Finally we need to draw the DecalSheets bitmapData into the new BitmapData Class instance, and apply the Matrix.</p>
+
+<pre>
+bmd.draw(bitmapData, m);	
+</pre>
+
+<p>Now we have our composited BitmapData and we simply return the new BitmapData instance.</p>
+
+<h2>Step 7: Testing the sample method</h2>
+<p>Before we go any further we are going to want to do a few simple things to test out new DecalSheet sample method. Lets go back into out Doc Class and add the following function at line 48 after the onImageLoad method:</p>
+
+<pre>
+public function registerDecals():void
+{
+	decalSheet.registerDecal("up", new Rectangle(0,0,99,31) );
+	decalSheet.registerDecal("down", new Rectangle(0,32,99,31) );
+	decalSheet.registerDecal("over", new Rectangle(99,0,99,31) );
+}	
+</pre>
+
+<p>Here you can see we register each of the button states we are going to need later when we create our SimpleButton. You will need to import the Rectangle class on line 11:</p>
+
+<pre>
+import flash.geom.Rectangle;
+</pre>
+
+<p>as well as adding the call for registerDecals on line 46, inside of the onImageLoad function after we add the DecalSheet to the stage.<p>
+	
+<pre>
+registerDecals();	
+</pre>
+
+<p>Now we are going to create one last function at the bottom of our class, around line 54:</p>
+
+<pre>
+public function decalSheetDemo():void
+{
+	var sampleBitmap:Bitmap = new Bitmap( decalSheet.sample("up") );
+		sampleBitmap.x = 230;
+
+	addChild(sampleBitmap);
+}	
+</pre>
+
+<p> This function will be our main staging area for the rest of the demo. Right now we are creating a new Bitmap from the DecalSheet's "up" registeredDecal coordinates, offseting its x position and adding it to the stage.</p>
+
+<p>We will call this function after the registerDecals call we added to the onImageLoad around line 46:</p>
+
+<pre>
+decalSheetDemo();
+</pre>
+
+<p>Now if we do a compile, we should see our DecalSheet image on the left, and our sampled Bitmap from the DecalSheet on the right. You can test out all of the Decals by changing "up" for "down" or "over". Now we have enough to start our Decal class.</p>
+
+<h2>Step 8: Creating the Decal Class.</h2>
+<p>Just like the DecalSheet, the Decal will also extend the Bitmap Class. The Decal however will have a very specialized purpose and will rely on the DecalSheet to supply it's BitmapData instead of having it passed into the constructor. Create a new Class called Decal and paste in the following code:</p>
+
+<pre>
+package com.flashartofwar
+{
+	import flash.display.Bitmap;
+
+	public class Decal extends Bitmap
+	{
+		protected var decalSheetSrc:DecalSheet;
+
+		public function Decal(name:String, src:DecalSheet, pixelSnapping:String="auto", smoothing:Boolean=false)
+		{
+			super(null, pixelSnapping, smoothing);
+
+			// Save decal sheet source.
+			decalSheetSrc = src;
+
+			// Save name of decal so we can sample it from the DecalSheet.
+			this.name = name;
+
+			// Get bitmap data from the DecalSheet src.
+			refresh();
+		}
+
+		public function refresh():void
+		{
+			bitmapData = decalSheetSrc.sample(name);
+		}
+
+	}
+}	
+</pre>
+
+<p>
+So what is going on? As you can see we are changing the constructor's arguments from the original BitmapClass's. Our Decal is going to need to know its name (we use this to request BitmapData from the DecalSheet through he sample method) and we need to know the src DecalSheet the Decal was cut out from.
+</p>
+
+<p>Going through the construction process, we pass in null to the super's BitmapData property along with any passed in values for pixelMapping and smoothing. Next we save a reference of the DecalSheet src in the deaclSheetSrc property. We then save the passed in name value in the inherited name property from the BitmapData. We use "this" to distinguish the difference between the passed in parameter and the name parameter of the Class's instance. Finally we call the refresh method.</p>
+	
+<p>
+The Decal's refresh method performs a simple task. It requests new BitmapData from it's parent DecalSheet and sets it. This creates the display of the Decal. Braking out the logic to request BitmapData from the parent DecalSheet will pay an important role later on when we begin to change the BitampData of the DecalSheet.
+</p>
+
+<h2>Step 9: Returning Decals from the DecalSheet</h2>
+<p>
+Before we can test that Decals works, we we will want to add the ability to request Decals by name from the DecalSheet and have it return a Decal instance. We can do this by adding the following function in the DecalSheet after the registerDecal method around line 21:
+</p>
+
+<pre>
+public function getDecal(name:String):Decal
+{
+	return decalRectangles[name] ? new Decal( name, this ) : null;
+}
+</pre>
+
+<p>Now we can request Decals from the DecalSheet by simply passing in the name of any registered Decals. You will notice this short hand conditional. Basically the first item is what we are testing. In this case we want to know if the supplied name has been registered with the decalRectangles Dictonary. The ? denotes what happens if it exists. Here we create a new Decal, give the same name that was passed into the getDecal function and supply a reference of the DecalSheet instance (this) to the Decal. The : denotes what happens if the supplied name was not found on the deacalRectangles Dictonary. We simply return null. Lets test this to make sure everything works.</p>
+ 
+<h2>Step 10: Testing the DecalShet and Decal</h2>
+
+<p>We are now ready to test our Decal. To do this we will move back over to the Doc Class and replace decalSheetDemo method with the following code:</p>
+
+<pre>
+public function decalSheetDemo():void
+{
+	var upDecal:Decal = decalSheet.getDecal("up");
+		upDecal.x = 230;
+
+	addChild(upDecal);
+}
+</pre>
+
+<p>We will also need to import the decal class at line 3:</p>
+
+<pre>
+import com.flashartofwar.Decal;
+</pre>
+
+<p>If you compile the class you should see the Decal on the right of the DecalSheet instance it was cut out from. So what is the big deal, we had the same thing 4 steps ago with less code? We let me explain why this is a powerful way to bring assets into your Flash app.</p>
+
+<p>Imagine you have a photo gallery. What if you had many sites all using the same photo gallery but you needed to brand each photo gallery based on the individual site it was being hosted on. Depending on how you create your photo gallery you may decide to create a swf with each button as an item in the library with a linkage ID. Or you can load each individual image in one at a time at run time. For a long time I used both ways but always found it limiting to wait for one large swf to load up or many smaller images to load in until I came up with the DecalSheet system.</p>
+
+<p>Now, I simply make a DeaclSheet image, define the coordinates for each button and I only have to manage one image and some cut out data. I usually put the cut out coordinates in an xml file and now I can hand the image off to a design who may know nothing about Flash but can create a new theme easily from a PSD template. I know this sounds like a one off example but I use this system in every Flash site I build. We haven't even touched on the coolest feature yet!</p>
+
+<p>What happens if you have to reskin an application on the fly? You would have to reload all of the images and create new class instances or build logic into your components to be able to get the new assets and rebuild themselves. Reskinning a Flash app built with Decals is a simple as changing the BitampData of the DeaclSheet. Let me show you how.</p>
+
+<h2>Step 11: Changing DecalSheet BitmapData</h2>
+<p>We are going to need a way to tell all of the Decals cut out from a DecalSheet that the BitmapData has been changed and they need to be resampled. We can do this easily by overriding the set bitmapData method of the DecalSheet. Add the following method below the DecalSheet constructor on line 17:</p>
+
+<pre>
+override public function set bitmapData(value:BitmapData):void
+{
+	super.bitmapData = value;
+	dispatchEvent(new Event(Event.CHANGE));	
+}
+</pre>
+
+<p>along with an import statement for Event at line 5:</p>
+<pre>
+import flash.events.Event;
+</pre>
+
+<p>Now that a new event is dispatched whenever the BitmapData of the DecalSheet is changed, we will need to listen for this in the Decal Class.</p>
+
+<h2>Step 12: Listening for DecalSheet Events</h2>
+<p>
+Now that the DecalSheet dispatches a change event when its BitmapData is updated, we can have the Decal listen for these events and resample it's own BitmapData from the DecalSheet. Lets add the following 3 methods in the Decal class under the refresh function at line 27:	
+</p>
+<pre>
+protected function addListeners(target:IEventDispatcher):void
+{
+	target.addEventListener(Event.CHANGE, onChange, false, 0, true);
+}
+
+protected function removeListeners(target:IEventDispatcher):void
+{
+	target.removeEventListener(Event.CHANGE, onChange);
+}
+
+protected function onChange(event:Event):void
+{
+	refresh();
+}	
+</pre>
+
+<p>We also have to import the IEventDispatcher and Event classes on line 4:</p>
+<pre>
+import flash.events.Event;
+import flash.events.IEventDispatcher;	
+</pre>
+
+<p>Finally we will need to apply the listener to the Decal's parent DecalSheet by adding the following code at the end of the constructor at line 23 of the constructor:</p>
+
+<pre>
+addListeners(src);
+</pre>
+
+<p>Before we move on, I just wanted to explain why I break up adding and removing event listeners into separate functions. When ever I create classes I try to think about how I will extend off of them and also how I can break up logic into the smallest possible pieces. These 3 functions represent a core feature of the Decal and are probably the most important ones we would ever want to modify when extending this class. I also try to use Interfaces when ever possible, I explain this in more detail later on. As you can see we can easily add and remove the Change Event listeners and we call refresh when the Decal instance hears the appropriate event. In the next step we will build our SimpleButton and explore this new functionality.
+</p> 
+
+<h2>Step 13: Creating a SimpleButton</h2>
+<p>Lets go back to the Doc Class and create a SimpleButton using all of the Decals we registered in the DecalSheet. Once again we are going to replace the decalSheetDemo function with the following code:</p>
+
+<pre>
+public function decalSheetDemo():void
+{
+	var up:Decal = decalSheet.getDecal("up");
+	var over:Decal = decalSheet.getDecal("over");
+	var down:Decal = decalSheet.getDecal("down");
+
+	var myButton:SimpleButton = new SimpleButton(up, over, down);
+		myButton.useHandCursor = true;
+		myButton.hitTestState = up;
+		myButton.x = 230;
+
+	this.addChild(myButton);
+}
+</pre>
+
+<p>We also need to import SimpleButton on line 8:</p>
+
+<pre>
+import flash.display.SimpleButton;
+</pre>
+
+<p>So now we are setting up each of the Decals, creating a new SimpleButton instances, and passing in the Decals to the constructor. Since the SimpeButton uses DisplayObjects for each state, and our Decals extends the Bitmap Class, we can substitute our Decals anywhere DisplayObjects are used. Compile the Doc Class and check out the button. You will see that up, over and down Decals are displayed when the button changes state.</p>
+
+<h2>Step 14: Updating the DecalSheet's BitmapData</h2> 
+<p>Now we are going to load in our second button skin "button_skin_b.png" and replace the DecalSheet's BitmapData. Since the decals are listening for the Change Event from the DecalSheet, we will be able to reskin the SimpleButton without changing a single property on it.</p>
+	
+<div class="tutorial_image"><img src="images/decal_sheet_event-2.jpg"/></div>
+<p>This diagram illustrates how by changing the BitmapData of the DecalSheet we can broadcast an event to all children Decals to resample.</p>	
+	
+<p>Lets get started by adding in the following event listener to the button on line 72 of the Doc Class after we add the button to the display list:</p>
+
+<pre>
+myButton.addEventListener(MouseEvent.CLICK, onClick);
+</pre>
+
+<p>Once that is in place lets add the following three methods below decalSheetDemo function:</p>
+
+<pre>
+private function onClick(event:MouseEvent):void
+{
+	loadBlueSkin("images/button_skin_b.png")
+}
+
+private function loadBlueSkin(url:String):void
+{
+	loader = new Loader();
+	loader.contentLoaderInfo.addEventListener(Event.COMPLETE, onBlueSkinLoaded);
+	loader.load( new URLRequest( url ) );
+}
+
+private function onBlueSkinLoaded(event:Event):void
+{
+	loader.removeEventListener(Event.COMPLETE, onImageLoad);
+	var bitmap:Bitmap = Bitmap(loader.content);
+
+	decalSheet.bitmapData = bitmap.bitmapData;
+}	
+</pre>
+
+<p>Finally we will need to import the MouseEvent on line 13:</p>
+<pre>
+import flash.events.MouseEvent;
+</pre>
+
+<p>So what we have done here is added a Click Event listener to the SimpleButton, when we hear that click we start to load in the new skin. Once the Skin is loaded, we type the loader's content as a Bitmap and pass it's BitmapData into the DecalSheet's bitmapData setter. When you run this now and click the button you will instantly see the SimpleButton's skin and DecalSheet get updated to the new image. The change over is instantaneous!</p>
+
+<p>So now you have seen how we create a DecalSheet, register Decals, get Decals and skin a SimpleButton. We also go to reskin the button at run time by simply loading in a new graphic. That about covers the power of using Decals to skin your Flash app. The following steps simply clean up the code we have written and add some extra functionality to help flesh out the DecalSheet system.</p>
+
+<h2>Step 15: Delete Decal</h2>
+<p>We can't just leave our DecalSheet without the ability to delete decals we have registered so lets add in a deleteDecal method after the registerDecal method:</p>
+
+<pre>
+public function deleteDecal(name:String):Boolean
+{
+	return delete decalRectangles[name];
+}	
+</pre>
+
+<h2>Step 16: Get Registered Decal Names</h2>
+<p>It would probably be helpful to get a list of all the registered Decal names from a DecalSheet so lets add in Array to store just the Decal names. We will need to add the following property after decalRectangles around line 13:</p>
+
+<pre>
+public var decalNames:Array = new Array();
+</pre>
+
+<p>And replace the registerDecal and deleteDecal methods with the following functions:<p>
+	
+<pre>
+public function registerDecal(name:String, rectangle:Rectangle):void
+{
+	decalRectangles[name] = rectangle;
+	decalNames.push(name);
+}
+
+public function deleteDecal(name:String):Boolean
+{
+	var index:Number = decalNames.indexOf(name);
+	if(index != -1)
+		decalNames.splice(index,1);
+		
+	return delete decalRectangles[name];
+}	
+</pre>
+
+<p>We can test this by running the following in the Doc Class:</p>
+
+<pre>
+trace("Decals", decalSheet.decalNames);
+decalSheet.deleteDecal("down");
+trace("Remaining Decals", decalSheet.decalNames);
+</pre>
+
+<h2>Step 17: Detach a Decal from the DecalSheet</h2>
+<p>The connection between the Decal and its parent DecalSheet is incredibly powerful but sometimes we want Decals to be a little more independent. That is why we are going to add a detach method to the Decal Class after the onChange method:</p>
+
+<pre>
+public function detach():void
+{
+	removeListeners(decalSheetSrc);
+	decalSheetSrc = null;
+}
+</pre>	
+
+<p>Once the detach method is called, we remove the Event listeners as well as null out the reference to the DecalSheet src. This completely disconnects any relation to the parent DecalSheet.</p>
+
+<h2>Step 18: Creating a DecalSheet Interface</h2>
+<p>
+One of the fundamental concepts of building OO (Object Oriented) code and design patterns is to "Program to an Interface; not an implementation". Unfortunately to fully explain this concept is out of the scope of this tutorial but that still doesn't mean we can't try to instill some best practices. If you have never used Interfaces before they are very simple. All an interface does is define a set of Public functions a class must contain. So in our DecalSheet system we are going to create an IDecalSheet interface and type our Decal to it. This will keep our decals loosely coupled to the DecalSheet and allow the most amount of flexibility when extending our system.
+</p>
+
+<p>To get started we will need to create a new Interface in the same package as our DecalSheet and Decal Classes. Here is the structure of the Interface:</p>
+
+<pre>
+package com.flashartofwar
+{
+	import flash.display.BitmapData;
+	import flash.display.IBitmapDrawable;
+	import flash.events.IEventDispatcher;
+	import flash.geom.Rectangle;
+
+	public interface IDecalSheet extends IBitmapDrawable, IEventDispatcher
+	{
+		function registerDecal(name:String, rectangle:Rectangle):void;
+		function deleteDecal(name:String):Boolean;
+		function getDecal(name:String):Decal;
+		function sample(name:String):BitmapData;
+	}
+}
+</pre>
+
+<p>So in our interface we are defining the most commonly used public functions that make up our DecalSheet. Also, take note that even our Interface can extend other interfaces. We are going to extend IBitmapDrawable and IEventDispatcher. This will allow our DecalSheet to do the same tasks as the Bitmap class and we will be able to dispatch and listen to events from it.</p>
+
+<p>Now we need to tell the DecalSheet to implement this Interface. If you go into the DecalSheet Class and replace the class definition around line 10 with the following:
+	
+<pre>
+public class DecalSheet extends Bitmap implements IDecalSheet
+</pre>
+
+<p>If your Interface is in the same package as your DecalSheet you do not have to worry about importing the IDecalSheet interface.<p>
+	
+<p>Next we have to implement the interface in our Decal Class. Whereever we use the type DecalSheet, we will want to replace it with IDecalSheet:</p>
+
+<p>Around line 9:</p>
+<pre>
+protected var decalSheetSrc:IDecalSheet;
+</pre>
+
+<p>Around line 11:</p>
+<pre>
+public function Decal(name:String, src:IDecalSheet, pixelSnapping:String="auto", smoothing:Boolean=false)	
+</pre>
+
+<p>Around line 32:</p>
+<pre>
+protected function addListeners(target:IDecalSheet):void	
+</pre>	
+
+<p>Around line 37:</p>	
+<pre>
+protected function removeListeners(target:IDecalSheet):void	
+</pre>
+	
+<p>Now our Decal is completely typed to the DecalSheet's Interface instead of the actual Class. We have also enforced that any Class that wants to use the Decal Class must implement all of the same public functions as the DeccalSheet.</p>
+	
+<h2>Step 19: Clear Decals from the DecalSheet</h2>
+<p>
+The last feature we will add is the ability to clear a DecalSheet of Decals and disconnect any instantiated Decal that are linked to the DecalSheet. To get started lets add the following method to the DecalSheet
+</p>
+
+<pre>
+public function clear():void
+{
+	dispatchEvent(new Event(Event.DEACTIVATE, true, true));
+	decalRectangles = new Dictionary(true);
+	decalNames = new Array();
+}	
+</pre>
+
+<p>Now when we call the clear method on the DecalSheet we dispatch a Deactivate Event and clear the Dictonary and Array. Now we need to add an Event listener to the Decal. In the Decal Class replace the addListeners and removeListeners function with the following:</p>
+
+<pre>
+protected function addListeners(target:IDecalSheet):void
+{
+	target.addEventListener(Event.CHANGE, onChange, false, 0, true);
+	target.addEventListener(Event.DEACTIVATE, onDeactivate);
+}
+
+protected function removeListeners(target:IDecalSheet):void
+{
+	target.removeEventListener(Event.CHANGE, onChange);
+	target.removeEventListener(Event.DEACTIVATE, onDeactivate);
+}
+</pre>
+
+<p>We will also need to add the following method after the onChange function:</p>
+
+<pre>
+protected function onDeactivate(event:Event):void
+{
+	event.stopPropagation();
+	detach();
+}	
+</pre>
+
+<p>We can test that the all the Decals have been disconnected by calling clear method on the DecalSheet and then trying to change the DecalSheet's BitmapData. You will see that the Decals no longer update themselves.</p>
+
+<h2>Step 20: Extending the DecalSheet System</h2>
+<p>
+There are a lot of possibilities for extending the DecalSheet system. One interesting spinoff is to make TextField DecalSheet. You can easily create a DecalSheet Class that implements the IDecalSheet Interface but instead of using BitmapData would instead take a TextField and break it down into Decals. By using TextLineMetrics. Decals can be created by going line by line down a TextField or Character by Character. This is a great way to move text around the screen and avoid the distortion you sometime find when moving animating Dynamic TextFields.	
+</p>
+<p>
+PaperVision is also another excellent place to use DecalSheets. Imaging being able to update a 3d model on the fly? By setting Decals as the textures you can update the DecalSheet's BitmapData to change the image of your 3d models.
+</p>
+
+<h2>The End</h2>
+<p>So that about covers the DecalSheet system. With DecalSheets, you can reduce your applications memory footprint by consolidating smaller images into larger images. Any graphic you would embed in a class or place in a FLA’s library can be stored in a single DecalSheet or they can be spread over multiple DecalSheets depending on your needs. Since DecalSheets can be set up to only load when requested, you can load in application graphics exactly when you need them; cutting down the initial startup and load time.Finally you can reskin your entire application by simply changing the BitmapData of your DecalSheets at run time.</p>
+
+<p>This was a simplified version of the DecalSheet system found in <a href="http://code.google.com/p/flash-camouflage/">Flash Camoflauge</a>, graphics framework that I wrote . I have used this technique in my own projects for over a year now and don't think I can live without it. Hope you enjoy it as much as I do!</p>
+
+	
+</body>
+
+
+</html>
